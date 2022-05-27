@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0px;
+            padding: 0px;
+background: linear-gradient(to left, rgb(95, 95, 221), rgb(247, 8, 48));
+        }
+        #container{
+            width: 30%;
+             height: 500px; 
+            border: 1px solid red;
+            border-radius: 10px;
+            margin: auto;
+            /* display: grid; */
+            text-align: center;
+            background-color: pink;
+            line-height: 18px;
+        }
+        #container>p{
+            margin-top: -10px;
+        }
+        #container>h2,h4{
+            margin-top: -1px;
+            margin-bottom: 12px;
+        }
+        #container>img{
+            border-radius: 10px;
+            width: 100%;
+            height: 57%;
+        }
+        #movie{
+            /* margin-left: 20%; */
+            width: 200px;
+            height: 25px;
+            border: 2px solid red;
+            border-radius: 10px;
+            padding: 4px;
+            margin-top: 10px;
+        }
+        #movie:hover{
+            background-color: pink;
+        }
+        /* #image{
+            border: 5px solid green;
+            height: 50px;
+        } */
+        .navbar{
+            border-radius: 10px;
+            
+            width: 100%;
+            height: 70px;
+            border: solid 1px red;
+            display: flex;
+            justify-content: space-evenly;
+            background-color: rgb(247, 151, 151);
+        }
+        .navbar>img{
+            width: 10%;
+            height: 80%;
+            margin-top: 5px;
+            border-radius: 8px;
+        }
+        button{
+            border: 2px solid red;
+            border-radius: 10px;
+            margin-top: 10px;
+            background-color: pink;
+            width: 80px;
+            height: 50%;
+        }
+        button:hover{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+      
+        <img src="https://www.freepnglogos.com/uploads/hotstar-logo-png/hotstar-dallas-yoga-fest-best-yoga-festival-dallas-fitness-7.png" alt="">
+         <img src="https://www.nxtbookmedia.com/wp-content/uploads/2014/06/netflix.png" alt="">
+        <input id="movie" type="text" placeholder="Enter movie name">
+        <button onclick="getData()" id="search">Search</button>
+        <img src="https://i0.wp.com/windows10times.com/wp-content/uploads/2016/06/mx-player-for-windows-10-download.png?fit=539%2C294&ssl=1" alt="">
+        <img src="https://i.pinimg.com/736x/87/70/5a/87705a2ddfc57918abcc7bdb574aec94.jpg" alt="">
+    </div>
+
+<div id="container">
+
+
+</div>
+
+</body>
+</html>
+<script>
+   
+    //console.log(title);
+   
+    //console.log(url)
+
+  async function getData() {
+    var title= document.getElementById("movie").value
+    const url= "http://www.omdbapi.com/?t="+title+"&apikey=2e98b7fb";
+      //console.log("checked");
+        try{
+            let res= await fetch(url);
+            let data = await res.json();
+           // append(users.data)
+          //console.log(data);
+          if(data.Title!=undefined && data.Poster!="N/A"){
+            apend(data);
+          }else{
+              console.log(data);
+              console.log("failed");
+              error()
+          }
+            
+        }
+        catch(err){
+          
+           console.log(err);
+        }
+    }
+    
+
+function apend(data){
+    console.log(data);
+    var div=document.getElementById("container")
+    div.innerHTML=null;
+    var img= document.createElement("img")
+    img.src=data.Poster
+    img.setAttribute("id","image")
+    var movie_name=document.createElement("h2")
+   movie_name.innerText=data.Title
+   movie_name.style.color="red"
+   var Released = document.createElement("p")
+   Released.innerText=data.Released
+   var imdbRating= document.createElement("p")
+   imdbRating.innerText=+data.imdbRating
+   console.log(+data.imdbRating);
+   if(data.imdbRating>8){
+       console.log("ratring");
+       var recommend=document.createElement("h4")
+       recommend.innerText="Recommended**"
+       div.append(recommend)
+   }
+   var plot= document.createElement("p")
+   plot.innerText=data.Plot
+   var actor= document.createElement("p")
+   actor.innerText=data.Actors
+   actor.style.color="blue"
+    div.append(img,movie_name,Released,imdbRating,plot,actor)
+}
+function error(){
+    
+    var div=document.getElementById("container")
+           div.innerHTML=null;
+            var img1=document.createElement("img")
+            img1.src="https://media0.giphy.com/media/TqiwHbFBaZ4ti/giphy.gif"
+           div.append(img1) 
+}
+
+</script>
